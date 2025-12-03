@@ -34,25 +34,60 @@ let gameState = {
     isSpymasterView: false,
     redRemaining: 0,
     blueRemaining: 0,
-    gameOver: false
+    gameOver: false,
+    seed: null
 };
+
+// Seeded Random Number Generator (Mulberry32)
+function mulberry32(a) {
+    return function () {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+
+let rng = Math.random; // Default to Math.random
 
 function shuffleArray(array) {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(rng() * (i + 1));
         [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
     return newArray;
 }
 
-function newGame() {
+function initGame() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const seedParam = urlParams.get('game');
+
+    if (seedParam) {
+        newGame(parseInt(seedParam, 10));
+    } else {
+        newGame();
+    }
+}
+
+function newGame(seed = null) {
+    // Generate or use provided seed
+    const gameSeed = seed || Math.floor(Math.random() * 1000000);
+    gameState.seed = gameSeed;
+
+    // Initialize RNG with seed
+    rng = mulberry32(gameSeed);
+
+    // Update URL without reloading
+    const newUrl = `${window.location.pathname}?game=${gameSeed}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+
     // Select 25 random words
     const shuffled = shuffleArray(TURKISH_WORDS);
     gameState.words = shuffled.slice(0, 25);
 
     // Determine starting team (random)
-    const startingTeam = Math.random() < 0.5 ? 'red' : 'blue';
+    const startingTeam = rng() < 0.5 ? 'red' : 'blue';
 
     // Create card types: 9 for starting team, 8 for other team, 7 neutral, 1 assassin
     const types = [];
@@ -69,6 +104,7 @@ function newGame() {
     gameState.redRemaining = redCount;
     gameState.blueRemaining = blueCount;
     gameState.gameOver = false;
+    gameState.isSpymasterView = false; // Reset view on new game
 
     updateScores();
     renderBoard();
@@ -79,6 +115,18 @@ function newGame() {
 function toggleView() {
     gameState.isSpymasterView = !gameState.isSpymasterView;
     renderBoard();
+}
+
+function copyLink() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        const btn = document.querySelector('.copy-link-btn');
+        const originalText = btn.textContent;
+        btn.textContent = 'Kopyalandı!';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+    });
 }
 
 function revealCard(index) {
@@ -94,7 +142,6 @@ function revealCard(index) {
     } else if (type === 'assassin') {
         gameState.gameOver = true;
         // The team that clicked the assassin loses
-        // We'll just show "OYUN BİTTİ!" for assassin
     }
 
     updateScores();
@@ -146,5 +193,5 @@ function renderBoard() {
     }
 }
 
-// Start a new game on load
-newGame();
+// Start game on load
+initGame();
