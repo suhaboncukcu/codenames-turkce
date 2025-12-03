@@ -14,36 +14,40 @@
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            height: 100vh;
+            max-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 1vh 1vw;
+            overflow: hidden;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 1vh;
             color: white;
+            flex-shrink: 0;
         }
 
         .header h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
+            font-size: clamp(1.5rem, 4vh, 3rem);
+            margin-bottom: 0.5vh;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .controls {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 1vw;
+            margin-bottom: 1vh;
             flex-wrap: wrap;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: clamp(8px, 1.5vh, 15px) clamp(15px, 2vw, 30px);
+            font-size: clamp(0.9rem, 1.8vh, 1.2rem);
             font-weight: bold;
             border: none;
             border-radius: 10px;
@@ -73,14 +77,15 @@
 
         .score-board {
             display: flex;
-            gap: 30px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            gap: 2vw;
+            margin-bottom: 1vh;
+            font-size: clamp(1rem, 2vh, 1.5rem);
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         .score {
-            padding: 15px 30px;
+            padding: clamp(8px, 1.5vh, 15px) clamp(15px, 2vw, 30px);
             border-radius: 10px;
             color: white;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
@@ -97,22 +102,24 @@
         .game-board {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            max-width: 1200px;
-            width: 100%;
+            gap: clamp(8px, 1vw, 15px);
+            width: 95%;
+            max-width: min(120vh, 95vw);
             margin: 0 auto;
+            flex: 1;
+            align-content: center;
         }
 
         .card {
             aspect-ratio: 1.5;
             background: white;
-            border-radius: 15px;
+            border-radius: clamp(8px, 1vw, 15px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: clamp(10px, 2vh, 20px);
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: clamp(0.9rem, 2vh, 1.5rem);
             font-weight: bold;
             text-align: center;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -199,23 +206,41 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 0.5vh 1vw;
+            }
+
             .header h1 {
-                font-size: 2rem;
+                font-size: clamp(1.2rem, 3vh, 2rem);
+            }
+
+            .game-board {
+                gap: clamp(5px, 0.8vw, 10px);
             }
 
             .card {
-                font-size: 1rem;
-                padding: 10px;
+                font-size: clamp(0.7rem, 1.5vh, 1rem);
+                padding: clamp(5px, 1vh, 10px);
             }
 
-            button {
-                padding: 10px 20px;
-                font-size: 1rem;
+            .controls {
+                gap: 2vw;
+                margin-bottom: 0.5vh;
             }
 
-            .score {
-                font-size: 1.2rem;
-                padding: 10px 20px;
+            .score-board {
+                margin-bottom: 0.5vh;
+                gap: 3vw;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .game-board {
+                width: 98%;
+            }
+
+            .card {
+                font-size: clamp(0.7rem, 1.8vw, 1.2rem);
             }
         }
     </style>
