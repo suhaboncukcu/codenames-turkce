@@ -30,6 +30,18 @@
         <button class="new-game-btn" onclick="newGame()">Yeni Oyun</button>
         <button class="toggle-view-btn" onclick="toggleView()">Görünümü Değiştir</button>
         <button class="copy-link-btn" onclick="copyLink()">🔗 Davet Et</button>
+        <button class="settings-btn" onclick="toggleSettings()">⚙️ Ayarlar</button>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="toggleSettings()">&times;</span>
+            <h2>Ayarlar</h2>
+            <p>Kendi kelime listenizi buraya yapıştırın (virgülle veya boşlukla ayrılmış):</p>
+            <textarea id="custom-words" rows="10" placeholder="ELMA, ARMUT, KİRAZ..."></textarea>
+            <button class="save-btn" onclick="saveCustomWords()">Kaydet ve Yeni Oyun</button>
+            <button class="reset-btn" onclick="resetWords()">Varsayılan Kelimelere Dön</button>
+        </div>
     </div>
 
     <div class="score-board">

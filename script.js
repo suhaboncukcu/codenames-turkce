@@ -83,7 +83,16 @@ function newGame(seed = null) {
     window.history.pushState({ path: newUrl }, '', newUrl);
 
     // Select 25 random words
-    const shuffled = shuffleArray(TURKISH_WORDS);
+    let wordPool = TURKISH_WORDS;
+    const customWordsStr = localStorage.getItem('customWords');
+    if (customWordsStr) {
+        const customWords = customWordsStr.split(',');
+        if (customWords.length >= 25) {
+            wordPool = customWords;
+        }
+    }
+
+    const shuffled = shuffleArray(wordPool);
     gameState.words = shuffled.slice(0, 25);
 
     // Determine starting team (random)
@@ -251,4 +260,49 @@ function resetTimer() {
     isTimerRunning = false;
     timeLeft = 120;
     updateTimerDisplay();
+}
+
+// Custom Words Logic
+function toggleSettings() {
+    const modal = document.getElementById('settings-modal');
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+    } else {
+        modal.style.display = 'block';
+        const savedWords = localStorage.getItem('customWords');
+        if (savedWords) {
+            document.getElementById('custom-words').value = savedWords;
+        }
+    }
+}
+
+function saveCustomWords() {
+    const text = document.getElementById('custom-words').value;
+    // Split by comma, newline, or space, filter empty
+    const words = text.split(/[
+,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length > 0);
+    
+    if (words.length < 25) {
+        alert('Lütfen en az 25 kelime giriniz!');
+        return;
+    }
+
+    localStorage.setItem('customWords', words.join(','));
+    toggleSettings();
+    newGame();
+}
+
+function resetWords() {
+    localStorage.removeItem('customWords');
+    document.getElementById('custom-words').value = '';
+    toggleSettings();
+    newGame();
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('settings-modal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
 }
