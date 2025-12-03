@@ -279,9 +279,8 @@ function toggleSettings() {
 function saveCustomWords() {
     const text = document.getElementById('custom-words').value;
     // Split by comma, newline, or space, filter empty
-    const words = text.split(/[
-,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length > 0);
-    
+    const words = text.split(/[\n,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length > 0);
+
     if (words.length < 25) {
         alert('Lütfen en az 25 kelime giriniz!');
         return;
@@ -300,7 +299,7 @@ function resetWords() {
 }
 
 // Close modal when clicking outside
-window.onclick = function(event) {
+window.onclick = function (event) {
     const modal = document.getElementById('settings-modal');
     if (event.target == modal) {
         modal.style.display = 'none';
