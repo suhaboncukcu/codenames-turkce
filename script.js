@@ -195,3 +195,41 @@ function renderBoard() {
 
 // Start game on load
 initGame();
+
+// Timer Logic
+let timerInterval;
+let timeLeft = 120; // 2 minutes
+let isTimerRunning = false;
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent =
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function toggleTimer() {
+    if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+    } else {
+        if (timeLeft <= 0) timeLeft = 120;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                // Optional: Play sound here
+            }
+        }, 1000);
+        isTimerRunning = true;
+    }
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+    timeLeft = 120;
+    updateTimerDisplay();
+}
