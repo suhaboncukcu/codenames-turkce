@@ -135,14 +135,89 @@ button:active {
     background: #3182ce;
 }
 
+.main-container {
+    display: flex;
+    gap: 2vw;
+    align-items: flex-start;
+    justify-content: center;
+    width: 95vw;
+}
+
 .game-board {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     gap: 1vh;
-    width: min(75vh * 1.5, 90vw);
+    width: min(75vh * 1.5, 70vw);
     height: 75vh;
     max-height: 75vh;
+}
+
+.log-sidebar {
+    width: 20vw;
+    height: 75vh;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.log-sidebar h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #2d3748;
+    font-size: 1.2rem;
+}
+
+#game-log {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.log-entry {
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+}
+
+.log-entry.red {
+    color: #e53e3e;
+}
+
+.log-entry.blue {
+    color: #3182ce;
+}
+
+.log-entry.neutral {
+    color: #718096;
+}
+
+.log-entry.assassin {
+    color: black;
+    font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game-board {
+        width: 90vw;
+        height: 60vh;
+    }
+
+    .log-sidebar {
+        width: 90vw;
+        height: 15vh;
+        margin-top: 10px;
+    }
 }
 
 .card {

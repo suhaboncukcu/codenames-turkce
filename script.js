@@ -108,6 +108,7 @@ function newGame(seed = null) {
 
     updateScores();
     renderBoard();
+    document.getElementById('game-log').innerHTML = ''; // Clear log
 
     document.getElementById('game-over').classList.remove('show');
 }
@@ -129,11 +130,29 @@ function copyLink() {
     });
 }
 
+function addToLog(word, type) {
+    const log = document.getElementById('game-log');
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type}`;
+
+    let typeText = '';
+    if (type === 'red') typeText = '(Kırmızı)';
+    else if (type === 'blue') typeText = '(Mavi)';
+    else if (type === 'neutral') typeText = '(Nötr)';
+    else if (type === 'assassin') typeText = '(SUİKASTÇI)';
+
+    entry.textContent = `${word} ${typeText}`;
+    log.insertBefore(entry, log.firstChild);
+}
+
 function revealCard(index) {
     if (gameState.revealed[index] || gameState.gameOver) return;
 
     gameState.revealed[index] = true;
     const type = gameState.types[index];
+    const word = gameState.words[index];
+
+    addToLog(word, type);
 
     if (type === 'red') {
         gameState.redRemaining--;
