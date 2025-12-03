@@ -169,7 +169,6 @@ function revealCard(index) {
         gameState.blueRemaining--;
     } else if (type === 'assassin') {
         gameState.gameOver = true;
-        // The team that clicked the assassin loses
     }
 
     updateScores();
@@ -189,7 +188,6 @@ function checkWin() {
         gameOverDiv.className = 'game-over show blue';
         gameState.gameOver = true;
     } else if (gameState.gameOver) {
-        // Assassin was clicked
         gameOverDiv.textContent = '💀 SUİKASTÇI! OYUN BİTTİ! 💀';
         gameOverDiv.className = 'game-over show';
         gameOverDiv.style.color = '#2d3748';
@@ -226,7 +224,7 @@ initGame();
 
 // Timer Logic
 let timerInterval;
-let timeLeft = 120; // 2 minutes
+let timeLeft = 120;
 let isTimerRunning = false;
 
 function updateTimerDisplay() {
@@ -248,7 +246,6 @@ function toggleTimer() {
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 isTimerRunning = false;
-                // Optional: Play sound here
             }
         }, 1000);
         isTimerRunning = true;
@@ -278,7 +275,6 @@ function toggleSettings() {
 
 function saveCustomWords() {
     const text = document.getElementById('custom-words').value;
-    // Split by comma, newline, or space, filter empty
     const words = text.split(/[\n,]+/).map(w => w.trim().toUpperCase()).filter(w => w.length > 0);
 
     if (words.length < 25) {
